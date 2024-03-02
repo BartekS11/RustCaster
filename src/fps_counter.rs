@@ -3,7 +3,7 @@ use bevy_inspector_egui::{egui, bevy_egui::EguiContexts};
 
 impl Plugin for FpsCounter {
     fn build(&self, app: &mut App) {
-            app.add_systems(Update, inspector_ui)
+            app.add_systems(Update, inspector_ui);
             // .add_systems(Update, display_debug_stats);
     }
 }
