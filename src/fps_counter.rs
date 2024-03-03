@@ -1,9 +1,11 @@
 use bevy::{prelude::*, diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin, EntityCountDiagnosticsPlugin}};
-use bevy_inspector_egui::{egui, bevy_egui::EguiContexts};
+use bevy_inspector_egui::{bevy_egui::EguiContexts, egui, quick::WorldInspectorPlugin};
 
 impl Plugin for FpsCounter {
     fn build(&self, app: &mut App) {
-            app.add_systems(Update, inspector_ui);
+        
+            app.add_systems(Update, inspector_ui)
+            .add_plugins(WorldInspectorPlugin::default());
             // .add_systems(Update, display_debug_stats);
     }
 }
@@ -12,8 +14,8 @@ pub struct FpsCounter;
 
 fn inspector_ui(world: &mut World, mut disabled: Local<bool>) {
     let space_pressed = world
-        .resource::<Input<KeyCode>>()
-        .just_pressed(KeyCode::C);
+        .resource::<ButtonInput<KeyCode>>()
+        .just_pressed(KeyCode::KeyC);
     if space_pressed {
         *disabled = !*disabled;
     }
@@ -27,7 +29,7 @@ fn display_debug_stats(mut egui: EguiContexts, diagnostics: Res<DiagnosticsStore
         ui.label(format!(
             "Avg. FPS: {:.02}",
             diagnostics
-                .get(FrameTimeDiagnosticsPlugin::FPS)
+                .get(&FrameTimeDiagnosticsPlugin::FPS)
                 .unwrap()
                 .average()
                 .unwrap_or_default()
@@ -35,7 +37,7 @@ fn display_debug_stats(mut egui: EguiContexts, diagnostics: Res<DiagnosticsStore
         ui.label(format!(
             "Total Entity count: {}",
             diagnostics
-                .get(EntityCountDiagnosticsPlugin::ENTITY_COUNT)
+                .get(&EntityCountDiagnosticsPlugin::ENTITY_COUNT)
                 .unwrap()
                 .average()
                 .unwrap_or_default()

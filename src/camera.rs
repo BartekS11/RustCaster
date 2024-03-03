@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 #[derive(Component)]
-struct MyCameraMarker;
+pub struct MyCameraMarker;
 
 pub fn setup_camera(mut commands: Commands) {
     commands.spawn((
