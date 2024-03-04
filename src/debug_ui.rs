@@ -1,20 +1,20 @@
-use bevy::{diagnostic::{DiagnosticsStore, EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin}, input::keyboard::KeyboardInput, prelude::*};
+use bevy::{diagnostic::{DiagnosticsStore, EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin}, prelude::*};
 use bevy_inspector_egui::{bevy_egui::EguiContexts, egui, quick::WorldInspectorPlugin};
 
-impl Plugin for FpsCounter {
+impl Plugin for DebugUI {
     fn build(&self, app: &mut App) {
         
             app.add_plugins(WorldInspectorPlugin::default())
-            .add_systems(Update, bevy::window::close_on_esc)
             .add_plugins(FrameTimeDiagnosticsPlugin::default())
             .add_plugins(EntityCountDiagnosticsPlugin)
+
+            .add_systems(Update, bevy::window::close_on_esc)
             .add_systems(Update, inspector_ui)
-            .insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)))
             .add_systems(Update, display_debug_stats);
     }
 }
 
-pub struct FpsCounter;
+pub struct DebugUI;
 
 fn inspector_ui(world: &mut World, mut disabled: Local<bool>) {
     let space_pressed = world
@@ -25,7 +25,7 @@ fn inspector_ui(world: &mut World, mut disabled: Local<bool>) {
             *disabled = !*disabled;
             info!("sdadasd");
         }
-        false => return,
+        false => {},
     }
 }
 

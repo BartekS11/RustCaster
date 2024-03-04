@@ -15,7 +15,7 @@ fn test_text(mut commands: Commands) {
     let text_style = TextStyle {
         font: Default::default(),
         font_size: 60.0,
-        color: Color::WHITE,
+        color: Color::BLACK,
     };
     commands.spawn((
         Text2dBundle {
@@ -40,6 +40,8 @@ impl Plugin for WorldPlugin {
         }))
         .add_systems(Startup, world_startup_system)
         .add_systems(Startup, setup_camera)
-        .add_systems(Startup, test_text);
+        .add_systems(Startup, test_text)
+        
+        .insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
     }
 }
