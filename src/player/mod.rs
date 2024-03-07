@@ -1,9 +1,9 @@
-use bevy::prelude::*;
 use self::player_systems::spawn_player;
+use bevy::prelude::*;
 
 pub mod player_component;
-pub mod player_ray;
 pub mod player_constants;
+pub mod player_ray;
 pub mod player_systems;
 
 pub struct PlayerPlugin;

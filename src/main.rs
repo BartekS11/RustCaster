@@ -1,8 +1,10 @@
+#![allow(non_snake_case)]
+
 use bevy::prelude::*;
-mod debug_ui;
-mod world;
 mod camera;
+mod debug_ui;
 mod player;
+mod world;
 
 use debug_ui::DebugUI;
 use player::PlayerPlugin;

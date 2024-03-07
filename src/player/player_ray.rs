@@ -5,5 +5,5 @@ pub struct PlayerRay {
     pub end: Vec3,
     pub distance: f32,
     pub rotation: f32,
-    pub color: Color
+    pub color: Color,
 }

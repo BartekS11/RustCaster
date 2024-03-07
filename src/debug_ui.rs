@@ -1,13 +1,14 @@
-use bevy::{diagnostic::{DiagnosticsStore, EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin}, prelude::*};
+use bevy::{
+    diagnostic::{DiagnosticsStore, EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin},
+    prelude::*,
+};
 use bevy_inspector_egui::{bevy_egui::EguiContexts, egui, quick::WorldInspectorPlugin};
 
 impl Plugin for DebugUI {
     fn build(&self, app: &mut App) {
-        
-            app.add_plugins(WorldInspectorPlugin::default())
-            .add_plugins(FrameTimeDiagnosticsPlugin::default())
+        app.add_plugins(WorldInspectorPlugin::default())
+            .add_plugins(FrameTimeDiagnosticsPlugin)
             .add_plugins(EntityCountDiagnosticsPlugin)
-
             .add_systems(Update, bevy::window::close_on_esc)
             .add_systems(Update, inspector_ui)
             .add_systems(Update, display_debug_stats);
@@ -25,7 +26,7 @@ fn inspector_ui(world: &mut World, mut disabled: Local<bool>) {
             *disabled = !*disabled;
             info!("sdadasd");
         }
-        false => {},
+        false => {}
     }
 }
 

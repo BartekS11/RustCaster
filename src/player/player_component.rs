@@ -1,5 +1,5 @@
-use bevy::prelude::*;
 use super::player_ray::PlayerRay;
+use bevy::prelude::*;
 
 #[derive(Component)]
 pub struct Player {

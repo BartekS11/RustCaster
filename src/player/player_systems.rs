@@ -5,11 +5,7 @@ use super::player_constants::TILESIZE;
 #[derive(Component)]
 pub struct Ground {}
 
-pub fn spawn_player(
-    mut commands: Commands,
-    window: Query<&Window>,
-    assets_serv: Res<AssetServer>
-) {
+pub fn spawn_player(mut commands: Commands, window: Query<&Window>, assets_serv: Res<AssetServer>) {
     let window = window.single();
     let width = window.resolution.width();
     let height = window.resolution.height();
@@ -19,8 +15,8 @@ pub fn spawn_player(
     for pos_x in 0..(width / TILESIZE).ceil() as i32 {
         for pos_y in 0..(height / TILESIZE).ceil() as i32 {
             walls.push((
-                ((pos_x as f32) * TILESIZE) + (TILESIZE), 
-                ((pos_y as f32) * TILESIZE) + (TILESIZE)
+                ((pos_x as f32) * TILESIZE) + (TILESIZE),
+                ((pos_y as f32) * TILESIZE) + (TILESIZE),
             ));
         }
     }
@@ -32,7 +28,7 @@ pub fn spawn_player(
                 texture: assets_serv.load("ground.png"),
                 ..default()
             },
-            Ground {}
+            Ground {},
         ));
     }
 }
