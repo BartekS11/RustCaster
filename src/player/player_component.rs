@@ -6,6 +6,6 @@ pub struct Player {
     pub rotation: f32,
     pub health_points: u32,
     pub velocity: Vec3,
-    pub is_colliding: bool,
+    pub is_collision_on: bool,
     pub rays: Vec<PlayerRay>,
 }

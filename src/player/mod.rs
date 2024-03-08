@@ -1,15 +1,15 @@
-use self::player_systems::spawn_player;
+use self::player_systems::{player_movement, player_spawn};
 use bevy::prelude::*;
 
 pub mod player_component;
 pub mod player_constants;
 pub mod player_ray;
 pub mod player_systems;
-
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, spawn_player);
+        app.add_systems(Startup, player_spawn);
+        app.add_systems(Update, player_movement);
     }
 }

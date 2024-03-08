@@ -11,20 +11,6 @@ fn world_startup_system(mut commands: Commands) {
     });
 }
 
-// fn test_text(mut commands: Commands) {
-//     let text_style = TextStyle {
-//         font: Default::default(),
-//         font_size: 60.0,
-//         color: Color::BLACK,
-//     };
-//     commands.spawn((
-//         Text2dBundle {
-//             text: Text::from_section("HELL!!!", text_style.clone()),
-//             ..default()
-//         },
-//     ));
-// }
-
 impl Plugin for WorldPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(DefaultPlugins.set(WindowPlugin {

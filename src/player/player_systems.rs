@@ -1,34 +1,77 @@
 use bevy::prelude::*;
 
-use super::player_constants::TILESIZE;
+use super::{
+    player_component::Player,
+    player_constants::{
+        PLAYER_ROTATING_SPEED, PLAYER_SPEED, PLAYER_STARTING_POSITION, PLAYER_STARTING_ROTATION,
+    },
+};
 
-#[derive(Component)]
-pub struct Ground {}
+pub fn player_spawn(mut commands: Commands, assets_serv: Res<AssetServer>) {
+    commands.spawn((
+        SpriteBundle {
+            transform: Transform::from_xyz(
+                PLAYER_STARTING_POSITION.x,
+                PLAYER_STARTING_POSITION.y,
+                0.0,
+            ),
+            texture: assets_serv.load("player.png"),
+            ..default()
+        },
+        Player {
+            rotation: PLAYER_STARTING_ROTATION,
+            health_points: 100,
+            velocity: default(),
+            is_collision_on: true,
+            rays: vec![],
+        },
+    ));
+}
 
-pub fn spawn_player(mut commands: Commands, window: Query<&Window>, assets_serv: Res<AssetServer>) {
-    let window = window.single();
-    let width = window.resolution.width();
-    let height = window.resolution.height();
-
-    let mut walls = vec![];
-
-    for pos_x in 0..(width / TILESIZE).ceil() as i32 {
-        for pos_y in 0..(height / TILESIZE).ceil() as i32 {
-            walls.push((
-                ((pos_x as f32) * TILESIZE) + (TILESIZE),
-                ((pos_y as f32) * TILESIZE) + (TILESIZE),
-            ));
+pub fn player_movement(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    time: Res<Time>,
+    mut player_query: Query<(&mut Transform, &mut Player), With<Player>>,
+) {
+    let mut dir = Vec3::default();
+    if let Ok((mut transform, mut player)) = player_query.get_single_mut() {
+        if keyboard_input.pressed(KeyCode::KeyW) || keyboard_input.pressed(KeyCode::ArrowUp) {
+            dir.x = player.rotation.to_radians().sin();
+            dir.y = player.rotation.to_radians().cos();
         }
+        if keyboard_input.pressed(KeyCode::KeyS) || keyboard_input.pressed(KeyCode::ArrowDown) {
+            dir.y = -player.rotation.to_radians().sin();
+            dir.x = -player.rotation.to_radians().cos();
+        }
+        if keyboard_input.pressed(KeyCode::KeyA) || keyboard_input.pressed(KeyCode::ArrowLeft) {
+            player.rotation += PLAYER_ROTATING_SPEED;
+            transform.rotate_z(PLAYER_ROTATING_SPEED.to_radians());
+        }
+        if keyboard_input.pressed(KeyCode::KeyD) || keyboard_input.pressed(KeyCode::ArrowRight) {
+            player.rotation -= PLAYER_ROTATING_SPEED;
+            transform.rotate_z(-PLAYER_ROTATING_SPEED.to_radians());
+        }
+
+        player.rotation = adjust_rotation(player.rotation);
+
+        if dir.length() > 0.0 {
+            dir = dir.normalize();
+        }
+
+        transform.translation += dir * PLAYER_SPEED * time.delta_seconds();
+        player.velocity = dir;
+    }
+}
+
+pub fn adjust_rotation(rotation: f32) -> f32 {
+    let new_rotation;
+    if rotation >= 360.0 {
+        new_rotation = (360.0 - rotation).abs();
+    } else if rotation < 0.0 {
+        new_rotation = 360.0 - rotation.abs();
+    } else {
+        new_rotation = rotation;
     }
 
-    for pos in walls {
-        commands.spawn((
-            SpriteBundle {
-                transform: Transform::from_xyz(pos.0, pos.1, 0.0),
-                texture: assets_serv.load("ground.png"),
-                ..default()
-            },
-            Ground {},
-        ));
-    }
+    new_rotation
 }
