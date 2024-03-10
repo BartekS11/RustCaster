@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 
-// use crate::player::player_component::Player;
 use crate::player::player_constants::TILESIZE;
 
 // #[derive(Debug)]
@@ -41,7 +40,7 @@ pub fn map_spawn(mut commands: Commands, window: Query<&Window>, assets_serv: Re
     let window = window.single();
     let width = window.resolution.width();
     let height = window.resolution.height();
-
+    
     let mut walls = vec![];
 
     for pos_x in 0..(width / TILESIZE).ceil() as i32 {
