@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 
+#[derive(Default)]
 pub struct PlayerRay {
     pub start: Vec3,
     pub end: Vec3,

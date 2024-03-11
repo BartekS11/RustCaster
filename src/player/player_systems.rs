@@ -1,11 +1,10 @@
-use bevy::prelude::*;
-
 use super::{
     player_component::Player,
     player_constants::{
         PLAYER_ROTATING_SPEED, PLAYER_SPEED, PLAYER_STARTING_POSITION, PLAYER_STARTING_ROTATION,
     },
 };
+use bevy::prelude::*;
 
 pub fn player_spawn(mut commands: Commands, assets_serv: Res<AssetServer>) {
     commands.spawn((

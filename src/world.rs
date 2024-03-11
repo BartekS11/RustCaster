@@ -17,14 +17,12 @@ impl Plugin for WorldPlugin {
             primary_window: Some(Window {
                 resolution: (1280., 720.).into(),
                 title: "RustCaster".to_string(),
-                // mode:  WindowMode::Borderless,
                 ..default()
             }),
             ..default()
         }))
         .add_systems(Startup, world_startup_system)
         .add_systems(Startup, setup_camera)
-        // .add_systems(Startup, test_text)
         .insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)));
     }
 }

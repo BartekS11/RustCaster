@@ -1,40 +1,42 @@
-use crate::player::player_ray::RayForPlayer;
+// use bevy::prelude::*;
 
-use super::rays_constants::{HALF_FOV, PRECISION, RAYS_AMOUNT, RAY_ANGLE_INCREMENT};
+// use crate::player::player_ray::RayForPlayer;
 
-pub(crate) fn raycaster(x: f32, y: f32, player_angle: f32) -> [RayForPlayer; RAYS_AMOUNT] {
-    let mut ray_angle: f32 = player_angle - HALF_FOV;
+// // use super::rays_constants::{HALF_FOV, PRECISION, RAYS_AMOUNT, RAY_ANGLE_INCREMENT};
 
-    let mut rays = [RayForPlayer::default(); RAYS_AMOUNT];
+// pub(crate) fn raycaster(x: f32, y: f32, player_angle: f32) -> [RayForPlayer; RAYS_AMOUNT] {
+//     let mut ray_angle: f32 = player_angle - HALF_FOV;
 
-    for (_count, ray) in rays.iter_mut().enumerate() {
-        let mut ray_x: f32 = x;
-        let mut ray_y: f32 = y;
+//     let mut rays = [RayForPlayer::default(); RAYS_AMOUNT];
 
-        let ray_cos = ray_angle.to_radians().cos() / PRECISION;
-        let ray_sin = ray_angle.to_radians().sin() / PRECISION;
+//     for (_count, ray) in rays.iter_mut().enumerate() {
+//         let mut ray_x: f32 = x;
+//         let mut ray_y: f32 = y;
 
-        // for _i in 0..RAY_MAX {
-        //     if wall_point(ray_x, ray_y) {
-        //         break;
-        //     }
-        //     ray_x += ray_cos;
-        //     ray_y += ray_sin;
-        // }
+//         let ray_cos = ray_angle.to_radians().cos() / PRECISION;
+//         let ray_sin = ray_angle.to_radians().sin() / PRECISION;
 
-        *ray = RayForPlayer {
-            x: ray_x,
-            y: ray_y,
-            distance: (ray_angle - player_angle).to_radians().cos()
-                * get_distance(x - ray_x, y - ray_y),
-        };
+//         // for _i in 0..RAY_MAX {
+//         //     if wall_point(ray_x, ray_y) {
+//         //         break;
+//         //     }
+//         //     ray_x += ray_cos;
+//         //     ray_y += ray_sin;
+//         // }
 
-        ray_angle += RAY_ANGLE_INCREMENT;
-    }
+//         *ray = RayForPlayer {
+//             x: ray_x,
+//             y: ray_y,
+//             distance: (ray_angle - player_angle).to_radians().cos()
+//                 * get_distance(x - ray_x, y - ray_y),
+//         };
 
-    rays
-}
+//         ray_angle += RAY_ANGLE_INCREMENT;
+//     }
 
-fn get_distance(x: f32, y: f32) -> f32 {
-    ((x * x) + (y * y)).sqrt()
-}
+//     rays
+// }
+
+// fn get_distance(x: f32, y: f32) -> f32 {
+//     ((x * x) + (y * y)).sqrt()
+// }
