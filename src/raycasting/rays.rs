@@ -1,42 +1,212 @@
-// use bevy::prelude::*;
+use std::f32::consts::{FRAC_2_PI, PI};
 
-// use crate::player::player_ray::RayForPlayer;
+use bevy::prelude::*;
 
-// // use super::rays_constants::{HALF_FOV, PRECISION, RAYS_AMOUNT, RAY_ANGLE_INCREMENT};
+use crate::map::map_systems::map_collision_points;
+use crate::player::player_component::Player;
 
-// pub(crate) fn raycaster(x: f32, y: f32, player_angle: f32) -> [RayForPlayer; RAYS_AMOUNT] {
-//     let mut ray_angle: f32 = player_angle - HALF_FOV;
+use super::rays_constants::{HALF_FOV, RAY_ANGLE_INCREMENT, WALL_HEIGHT};
 
-//     let mut rays = [RayForPlayer::default(); RAYS_AMOUNT];
+fn get_distance(x: f32, y: f32) -> f32 {
+    ((x * x) + (y * y)).sqrt()
+}
 
-//     for (_count, ray) in rays.iter_mut().enumerate() {
-//         let mut ray_x: f32 = x;
-//         let mut ray_y: f32 = y;
+// fn raycast_horizontal_intersection(
+//     mut player_query: Query<(&mut Transform, &mut Player), With<Player>>) -> f32 {
+//         if let Ok((transform, mut player)) = player_query.get_single_mut() {
+//             // Calculate up ungle
+//             let up_angle = ((player_rotation / PI).floor() % 2.0).abs() != 0.0;
+//              let intersect_first_y = if up_angle {
+//                 (player_velocity_y).ceil() - player_velocity_y
+//             } else {
+//                 (player_velocity_y).floor() - player_velocity_y
+//             };
 
-//         let ray_cos = ray_angle.to_radians().cos() / PRECISION;
-//         let ray_sin = ray_angle.to_radians().sin() / PRECISION;
+//             let intersect_first_x = -intersect_first_y / player_rotation.tan();
 
-//         // for _i in 0..RAY_MAX {
-//         //     if wall_point(ray_x, ray_y) {
-//         //         break;
-//         //     }
-//         //     ray_x += ray_cos;
-//         //     ray_y += ray_sin;
-//         // }
+//             let dy = if up_angle { 1.0 } else { -1.0 };
+//             let dx = -dy / (player_rotation).tan();
 
-//         *ray = RayForPlayer {
-//             x: ray_x,
-//             y: ray_y,
-//             distance: (ray_angle - player_angle).to_radians().cos()
-//                 * get_distance(x - ray_x, y - ray_y),
-//         };
+//             // Ray distance from player
+//             let mut next_ray_from_player_x = intersect_first_x;
+//             let mut next_ray_from_player_y = intersect_first_y;
 
-//         ray_angle += RAY_ANGLE_INCREMENT;
+//         // Loop that extends ray until it hits wall
+//         for _ in 0..256 {
+//             let current_x = next_ray_from_player_x + player_velocity_x;
+//             let current_y = if up_angle {
+//                 next_ray_from_player_y + player_velocity_y
+//             } else {
+//                 next_ray_from_player_y + player_velocity_y - 1.0
+//             };
+
+//         // Break loop when collision with wall will happen
+//         if map_collision_points(current_x, current_y) {
+//             break;
+//         }
+//             next_ray_from_player_x += dx;
+//             next_ray_from_player_y += dy;
+//         }
+//         return get_distance(next_ray_from_player_x, next_ray_from_player_y)
+//         }
+//         0.0
+// }
+
+// fn raycast_vertical_intersection(
+//     mut player_query: Query<(&mut Transform, &mut Player), With<Player>>) -> f32 {
+//         if let Ok((transform, mut player)) = player_query.get_single_mut() {
+//             let right = (((player_rotation - FRAC_2_PI) / PI).floor() % 2.0).abs() != 0.0;
+//             let intersect_first_x = if right {
+//                 (player_velocity_x).ceil() - player_velocity_x
+//             } else {
+//                 (player_velocity_x).floor() - player_velocity_x
+//             };
+//             let intersect_first_y = -(player_rotation).tan() * intersect_first_x;
+
+//             let dx = if right { 1.0 } else { -1.0 };
+//             let dy = dx * -(player_rotation).tan();
+
+//             // Ray distance from player
+//             let mut next_ray_from_player_x = intersect_first_x;
+//             let mut next_ray_from_player_y = intersect_first_y;
+
+//             for _ in 0..256 {
+//                 let current_x = next_ray_from_player_x + player_velocity_x;
+//                 let current_y = if right {
+//                     next_ray_from_player_x + player_velocity_x
+//                 } else {
+//                     next_ray_from_player_x + player_velocity_x - 1.0
+//                 };
+
+//             // Break loop when collision with wall will happen
+//             if map_collision_points(current_x, current_y) {
+//                 break;
+//             }
+//                 next_ray_from_player_x += dx;
+//                 next_ray_from_player_y += dy;
+//             }
+//             return get_distance(next_ray_from_player_x, next_ray_from_player_y)
+//         }
+//         0.0
+// }
+
+// fn get_player_view(mut player_query: Query<(&mut Transform, &mut Player), With<Player>>) -> [i32; 1280] {
+//     if let Ok((transform, mut player)) = player_query.get_single_mut() {
+
+//     let start_angle = player_rotation + HALF_FOV;
+
+//     let mut walls = [0; 1280];
+
+//     for(idx, wall) in walls.iter_mut().enumerate() {
+//         let angle = start_angle - idx as f32 * RAY_ANGLE_INCREMENT;
+
+//         let h_dist = raycast_horizontal_intersection();
+//         let v_dist = raycast_vertical_intersection();
+
+//         *wall = (WALL_HEIGHT / f32::min(h_dist, v_dist)) as i32;
 //     }
+//     return walls
 
-//     rays
+//     }
+//     [0; 1280]
 // }
 
-// fn get_distance(x: f32, y: f32) -> f32 {
-//     ((x * x) + (y * y)).sqrt()
-// }
+fn raycast_horizontal_intersection(
+    player_velocity_x: f32,
+    player_velocity_y: f32,
+    player_rotation: f32,
+) -> f32 {
+    // Calculate up ungle
+    let up_angle = ((player_rotation / PI).floor() % 2.0).abs() != 0.0;
+    let intersect_first_y = if up_angle {
+        (player_velocity_y).ceil() - player_velocity_y
+    } else {
+        (player_velocity_y).floor() - player_velocity_y
+    };
+
+    let intersect_first_x = -intersect_first_y / player_rotation.tan();
+
+    let dy = if up_angle { 1.0 } else { -1.0 };
+    let dx = -dy / (player_rotation).tan();
+
+    // Ray distance from player
+    let mut next_ray_from_player_x = intersect_first_x;
+    let mut next_ray_from_player_y = intersect_first_y;
+
+    // Loop that extends ray until it hits wall
+    for _ in 0..256 {
+        let current_x = next_ray_from_player_x + player_velocity_x;
+        let current_y = if up_angle {
+            next_ray_from_player_y + player_velocity_y
+        } else {
+            next_ray_from_player_y + player_velocity_y - 1.0
+        };
+
+        // Break loop when collision with wall will happen
+        if map_collision_points(current_x, current_y) {
+            break;
+        }
+        next_ray_from_player_x += dx;
+        next_ray_from_player_y += dy;
+    }
+    return get_distance(next_ray_from_player_x, next_ray_from_player_y);
+}
+
+fn raycast_vertical_intersection(
+    player_velocity_x: f32,
+    player_velocity_y: f32,
+    player_rotation: f32,
+) -> f32 {
+    let right = (((player_rotation - FRAC_2_PI) / PI).floor() % 2.0).abs() != 0.0;
+    let intersect_first_x = if right {
+        (player_velocity_x).ceil() - player_velocity_x
+    } else {
+        (player_velocity_x).floor() - player_velocity_x
+    };
+    let intersect_first_y = -(player_rotation).tan() * intersect_first_x;
+
+    let dx = if right { 1.0 } else { -1.0 };
+    let dy = dx * -(player_rotation).tan();
+
+    // Ray distance from player
+    let mut next_ray_from_player_x = intersect_first_x;
+    let mut next_ray_from_player_y = intersect_first_y;
+
+    // Loop that extends ray until it hits wall
+    for _ in 0..256 {
+        let current_x = if right {
+            next_ray_from_player_x + player_velocity_x
+        } else {
+            next_ray_from_player_x + player_velocity_x - 1.0
+        };
+        let current_y = next_ray_from_player_y + player_velocity_y;
+
+        // Break loop when collision with wall will happen
+        if map_collision_points(current_x, current_y) {
+            break;
+        }
+        next_ray_from_player_x += dx;
+        next_ray_from_player_y += dy;
+    }
+    return get_distance(next_ray_from_player_x, next_ray_from_player_y);
+}
+
+pub fn get_player_view(
+    player_velocity_x: f32,
+    player_velocity_y: f32,
+    player_rotation: f32,
+) -> [i32; 1280] {
+    let start_angle = player_rotation + HALF_FOV;
+
+    let mut walls = [0; 1280];
+
+    for (idx, wall) in walls.iter_mut().enumerate() {
+        let angle = start_angle - idx as f32 * RAY_ANGLE_INCREMENT;
+
+        let h_dist = raycast_horizontal_intersection(player_velocity_x, player_velocity_y, angle);
+        let v_dist = raycast_vertical_intersection(player_velocity_x, player_velocity_y, angle);
+
+        *wall = (WALL_HEIGHT / f32::min(h_dist, v_dist)) as i32;
+    }
+    walls
+}

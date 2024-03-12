@@ -22,7 +22,7 @@ pub fn player_spawn(mut commands: Commands, assets_serv: Res<AssetServer>) {
             health_points: 100,
             velocity: default(),
             is_collision_on: true,
-            rays: vec![],
+            // rays: vec![],
         },
     ));
 }
@@ -73,4 +73,8 @@ pub fn adjust_rotation(rotation: f32) -> f32 {
     }
 
     new_rotation
+}
+
+pub fn start_raycast_for_player(mut player: ResMut<Player>) {
+    player.get_view();
 }

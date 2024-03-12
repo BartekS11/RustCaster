@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use self::map_systems::map_spawn;
 
-mod map_systems;
+pub mod map_systems;
 pub struct MapPlugin;
 
 impl Plugin for MapPlugin {
