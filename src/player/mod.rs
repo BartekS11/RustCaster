@@ -1,6 +1,4 @@
-use self::
-    player_systems::{player_movement, player_spawn, start_raycast_for_player}
-;
+use self::player_systems::{player_movement, player_spawn, start_raycast_for_player};
 use bevy::prelude::*;
 
 pub mod player_component;
