@@ -1,9 +1,9 @@
 use std::f32::consts::{FRAC_2_PI, PI};
 
-use bevy::prelude::*;
+// use bevy::prelude::*;
 
 use crate::map::map_systems::map_collision_points;
-use crate::player::player_component::Player;
+// use crate::player::player_component::Player;
 
 use super::rays_constants::{HALF_FOV, RAY_ANGLE_INCREMENT, WALL_HEIGHT};
 
@@ -149,7 +149,7 @@ fn raycast_horizontal_intersection(
         next_ray_from_player_x += dx;
         next_ray_from_player_y += dy;
     }
-    return get_distance(next_ray_from_player_x, next_ray_from_player_y);
+    get_distance(next_ray_from_player_x, next_ray_from_player_y)
 }
 
 fn raycast_vertical_intersection(
@@ -188,7 +188,7 @@ fn raycast_vertical_intersection(
         next_ray_from_player_x += dx;
         next_ray_from_player_y += dy;
     }
-    return get_distance(next_ray_from_player_x, next_ray_from_player_y);
+    get_distance(next_ray_from_player_x, next_ray_from_player_y)
 }
 
 pub fn get_player_view(
