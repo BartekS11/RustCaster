@@ -22,7 +22,6 @@ pub fn player_spawn(mut commands: Commands, assets_serv: Res<AssetServer>) {
             health_points: 100,
             velocity: default(),
             is_collision_on: true,
-            // rays: vec![],
         },
     ));
 }
@@ -75,6 +74,14 @@ pub fn adjust_rotation(rotation: f32) -> f32 {
     new_rotation
 }
 
-pub fn start_raycast_for_player(mut player: ResMut<Player>) {
-    player.get_view();
+pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player, With<Player>>) {
+    if let Ok(player) = player_query.get_single() {
+        for (ray, wall_height) in player.get_view().iter().enumerate() {
+            gizmos.line_2d(
+                Vec2::new(ray as f32, *wall_height as f32),
+                Vec2::new(ray as f32, (80 - (*wall_height / 2)) as f32),
+                Color::WHITE,
+            )
+        }
+    }
 }

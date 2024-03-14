@@ -1,12 +1,12 @@
-use bevy::prelude::*;
+// use bevy::prelude::*;
 
-use self::map_systems::map_spawn;
+// use self::map_systems::map_spawn;
 
 pub mod map_systems;
-pub struct MapPlugin;
+// pub struct MapPlugin;
 
-impl Plugin for MapPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(PreStartup, map_spawn);
-    }
-}
+// impl Plugin for MapPlugin {
+//     fn build(&self, app: &mut App) {
+//         // app.add_systems(PreStartup, map_spawn);
+//     }
+// }

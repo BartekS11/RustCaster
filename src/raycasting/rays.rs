@@ -7,7 +7,7 @@ use crate::map::map_systems::map_collision_points;
 
 use super::rays_constants::{HALF_FOV, RAY_ANGLE_INCREMENT, WALL_HEIGHT};
 
-fn get_distance(x: f32, y: f32) -> f32 {
+pub fn get_distance(x: f32, y: f32) -> f32 {
     ((x * x) + (y * y)).sqrt()
 }
 

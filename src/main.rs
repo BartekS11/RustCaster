@@ -9,17 +9,15 @@ mod raycasting;
 mod world;
 
 use debug_ui::DebugUI;
-use map::MapPlugin;
+// use map::MapPlugin;
 use player::PlayerPlugin;
-// use raycasting::RaycastingPlugin;
 use world::WorldPlugin;
 
 fn main() {
     App::new()
         .add_plugins(WorldPlugin)
         .add_plugins(DebugUI)
-        .add_plugins(MapPlugin)
+        // .add_plugins(MapPlugin)
         .add_plugins(PlayerPlugin)
-        // .add_plugins(RaycastingPlugin)
         .run();
 }
