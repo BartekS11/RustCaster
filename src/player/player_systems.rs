@@ -6,15 +6,15 @@ use super::{
 };
 use bevy::prelude::*;
 
-pub fn player_spawn(mut commands: Commands, assets_serv: Res<AssetServer>) {
+pub fn player_spawn(mut commands: Commands, _assets_serv: Res<AssetServer>) {
     commands.spawn((
         SpriteBundle {
             transform: Transform::from_xyz(
                 PLAYER_STARTING_POSITION.x,
                 PLAYER_STARTING_POSITION.y,
-                0.0,
+                PLAYER_STARTING_POSITION.z,
             ),
-            texture: assets_serv.load("player.png"),
+            // texture: assets_serv.load("player.png"),
             ..default()
         },
         Player {
@@ -78,8 +78,10 @@ pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player,
     if let Ok(player) = player_query.get_single() {
         for (ray, wall_height) in player.get_view().iter().enumerate() {
             gizmos.line_2d(
-                Vec2::new(ray as f32, *wall_height as f32),
-                Vec2::new(ray as f32, (80 - (*wall_height / 2)) as f32),
+                Vec2::new(ray as f32, 0.0),
+                // Vec2::new(ray as f32, *wall_height as f32),
+                // Vec2::new(ray as f32, (80 - (*wall_height / 2)) as f32),
+                Vec2::new(0.0, (1280 - (*wall_height / 2)) as f32),
                 Color::GREEN,
             )
         }
