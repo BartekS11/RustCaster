@@ -24,7 +24,6 @@ fn inspector_ui(world: &mut World, mut disabled: Local<bool>) {
     match space_pressed {
         true => {
             *disabled = !*disabled;
-            info!("sdadasd");
         }
         false => {}
     }
