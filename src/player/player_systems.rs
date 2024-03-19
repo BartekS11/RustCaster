@@ -19,7 +19,7 @@ pub fn player_spawn(mut commands: Commands, _assets_serv: Res<AssetServer>) {
         },
         Player {
             rotation: PLAYER_STARTING_ROTATION,
-            health_points: 100,
+            health_points: 101,
             velocity: default(),
             is_collision_on: true,
         },
