@@ -6,7 +6,7 @@ use crate::raycasting::rays::get_player_view;
 pub struct Player {
     pub rotation: f32,
     pub health_points: u32,
-    pub velocity: Vec3,
+    pub velocity: Vec2,
     pub is_collision_on: bool,
 }
 

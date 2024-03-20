@@ -1,3 +1,5 @@
+use crate::map::map_systems::map_collision_points;
+
 use super::{
     player_component::Player,
     player_constants::{
@@ -12,15 +14,14 @@ pub fn player_spawn(mut commands: Commands, _assets_serv: Res<AssetServer>) {
             transform: Transform::from_xyz(
                 PLAYER_STARTING_POSITION.x,
                 PLAYER_STARTING_POSITION.y,
-                PLAYER_STARTING_POSITION.z,
+                PLAYER_STARTING_ROTATION,
             ),
-            // texture: assets_serv.load("player.png"),
             ..default()
         },
         Player {
             rotation: PLAYER_STARTING_ROTATION,
             health_points: 101,
-            velocity: default(),
+            velocity: PLAYER_STARTING_POSITION,
             is_collision_on: true,
         },
     ));
@@ -31,33 +32,41 @@ pub fn player_movement(
     time: Res<Time>,
     mut player_query: Query<(&mut Transform, &mut Player), With<Player>>,
 ) {
-    let mut dir = Vec3::default();
-    if let Ok((mut transform, mut player)) = player_query.get_single_mut() {
+    if let Ok((mut _transform, mut player)) = player_query.get_single_mut() {
+        let previous_velocity = (player.velocity.x, player.velocity.y);
         if keyboard_input.pressed(KeyCode::KeyW) || keyboard_input.pressed(KeyCode::ArrowUp) {
-            dir.x = player.rotation.to_radians().sin();
-            dir.y = player.rotation.to_radians().cos();
+            player.velocity.x +=
+                (player.rotation).to_radians().cos() * PLAYER_SPEED * time.delta_seconds();
+            player.velocity.y +=
+                (player.rotation).to_radians().sin() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyS) || keyboard_input.pressed(KeyCode::ArrowDown) {
-            dir.y = -player.rotation.to_radians().sin();
-            dir.x = -player.rotation.to_radians().cos();
+            player.velocity.y -=
+                (player.rotation).to_radians().sin() * PLAYER_SPEED * time.delta_seconds();
+            player.velocity.x -=
+                (player.rotation).to_radians().cos() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyA) || keyboard_input.pressed(KeyCode::ArrowLeft) {
             player.rotation += PLAYER_ROTATING_SPEED;
-            transform.rotate_z(PLAYER_ROTATING_SPEED.to_radians());
         }
         if keyboard_input.pressed(KeyCode::KeyD) || keyboard_input.pressed(KeyCode::ArrowRight) {
             player.rotation -= PLAYER_ROTATING_SPEED;
-            transform.rotate_z(-PLAYER_ROTATING_SPEED.to_radians());
         }
 
         player.rotation = adjust_rotation(player.rotation);
 
-        if dir.length() > 0.0 {
-            dir = dir.normalize();
+        if player.velocity.length() > 0.0 {
+            player.velocity = player.velocity.normalize();
         }
 
-        transform.translation += dir * PLAYER_SPEED * time.delta_seconds();
-        player.velocity = dir;
+        if !map_collision_points(player.velocity.x, player.velocity.y) {
+            (player.velocity.x, player.velocity.y) = previous_velocity;
+        }
+
+        println!(
+            "x: {}, y: {}, rot: {}",
+            player.velocity.x, player.velocity.y, player.rotation
+        );
     }
 }
 
@@ -79,11 +88,14 @@ pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player,
         for (ray, wall_height) in player.get_view().iter().enumerate() {
             gizmos.line_2d(
                 Vec2::new(ray as f32, 0.0),
-                // Vec2::new(ray as f32, *wall_height as f32),
-                // Vec2::new(ray as f32, (80 - (*wall_height / 2)) as f32),
-                Vec2::new(0.0, (1280 - (*wall_height / 2)) as f32),
+                Vec2::new(0.0, ((80 - (wall_height / 2)) + *wall_height - 1) as f32),
                 Color::GREEN,
             )
+            // gizmos.ray_2d(
+            //     Vec2::new(ray as f32, 0.0),
+            //     Vec2::new(0.0, ((80 - (wall_height / 2)) + *wall_height - 1) as f32),
+            //     Color::GREEN,
+            // )
         }
     }
 }

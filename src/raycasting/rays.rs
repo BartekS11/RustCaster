@@ -1,13 +1,9 @@
 use std::f32::consts::{FRAC_2_PI, PI};
 
-// use bevy::prelude::*;
-
-use crate::map::map_systems::map_collision_points;
-// use crate::player::player_component::Player;
-
 use super::rays_constants::{HALF_FOV, RAY_ANGLE_INCREMENT, WALL_HEIGHT};
+use crate::map::map_systems::map_collision_points;
 
-pub fn get_distance(x: f32, y: f32) -> f32 {
+fn get_distance(x: f32, y: f32) -> f32 {
     ((x * x) + (y * y)).sqrt()
 }
 
@@ -34,7 +30,7 @@ fn raycast_horizontal_intersection(
     let mut next_ray_from_player_y = intersect_first_y;
 
     // Loop that extends ray until it hits wall
-    for _ in 0..1280 {
+    for _ in 0..256 {
         let current_x = next_ray_from_player_x + player_velocity_x;
         let current_y = if up_angle {
             next_ray_from_player_y + player_velocity_y
@@ -58,6 +54,7 @@ fn raycast_vertical_intersection(
     player_rotation: f32,
 ) -> f32 {
     let right = (((player_rotation - FRAC_2_PI) / PI).floor() % 2.0).abs() != 0.0;
+
     let intersect_first_x = if right {
         (player_velocity_x).ceil() - player_velocity_x
     } else {
@@ -73,7 +70,7 @@ fn raycast_vertical_intersection(
     let mut next_ray_from_player_y = intersect_first_y;
 
     // Loop that extends ray until it hits wall
-    for _ in 0..1280 {
+    for _ in 0..256 {
         let current_x = if right {
             next_ray_from_player_x + player_velocity_x
         } else {

@@ -4,6 +4,7 @@ use bevy::{
     window::*,
 };
 use bevy_inspector_egui::{bevy_egui::EguiContexts, egui, quick::WorldInspectorPlugin};
+
 pub struct DebugUI;
 
 impl Plugin for DebugUI {
@@ -12,8 +13,7 @@ impl Plugin for DebugUI {
             .add_plugins(FrameTimeDiagnosticsPlugin)
             .add_plugins(EntityCountDiagnosticsPlugin)
             .add_systems(Update, close_on_esc)
-            .add_systems(Update, inspector_ui)
-            .add_systems(Update, display_debug_stats);
+            .add_systems(Update, (inspector_ui, display_debug_stats));
     }
 }
 
@@ -49,3 +49,16 @@ fn display_debug_stats(mut egui: EguiContexts, diagnostics: Res<DiagnosticsStore
         ));
     });
 }
+
+// fn display_debug_player_stats(mut egui: EguiContexts, world: &mut World) {
+//     egui::Window::new("Player stuff").show(egui.ctx_mut(), |ui| {
+//         ui.label(format!(
+//             "Player pos: {:.02}",
+//             world
+//                 .get(&world.entity(player))
+//                 .unwrap()
+//                 .smoothed()
+//                 .unwrap_or_default()
+//         ));
+//     });
+// }
