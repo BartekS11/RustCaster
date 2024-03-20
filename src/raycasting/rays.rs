@@ -98,6 +98,7 @@ pub fn get_player_view(
     let mut walls = [0; 1280];
 
     for (idx, wall) in walls.iter_mut().enumerate() {
+        // let angle = start_angle - idx as f32 * RAY_ANGLE_INCREMENT;
         let angle = start_angle - idx as f32 * RAY_ANGLE_INCREMENT;
 
         let h_dist = raycast_horizontal_intersection(player_velocity_x, player_velocity_y, angle);
