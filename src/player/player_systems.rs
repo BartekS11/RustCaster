@@ -90,7 +90,7 @@ pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player,
             gizmos.ray_2d(
                 Vec2::new(ray as f32, y_top),
                 Vec2::new(ray as f32, y_top + *wall_height as f32),
-                Color::GREEN,
+                Color::LIME_GREEN,
             )
         }
     }
