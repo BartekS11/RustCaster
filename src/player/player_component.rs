@@ -11,7 +11,7 @@ pub struct Player {
 }
 
 impl Player {
-    pub fn get_view(&self) -> [i32; 1280] {
+    pub fn get_view(&self) -> [i32; 800] {
         get_player_view(self.velocity.x, self.velocity.y, self.rotation)
     }
 }

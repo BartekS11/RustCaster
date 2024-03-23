@@ -30,21 +30,22 @@ pub fn player_spawn(mut commands: Commands, _assets_serv: Res<AssetServer>) {
 pub fn player_movement(
     keyboard_input: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
-    mut player_query: Query<(&mut Transform, &mut Player), With<Player>>,
+    mut player_query: Query<&mut Player, With<Player>>,
 ) {
-    if let Ok((mut _transform, mut player)) = player_query.get_single_mut() {
+    if let Ok(mut player) = player_query.get_single_mut() {
         let previous_velocity = (player.velocity.x, player.velocity.y);
+
         if keyboard_input.pressed(KeyCode::KeyW) || keyboard_input.pressed(KeyCode::ArrowUp) {
             player.velocity.x +=
-                (player.rotation).to_radians().cos() * PLAYER_SPEED * time.delta_seconds();
+                (player.rotation).cos() * PLAYER_SPEED * time.delta_seconds();
             player.velocity.y +=
-                (player.rotation).to_radians().sin() * PLAYER_SPEED * time.delta_seconds();
+                -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyS) || keyboard_input.pressed(KeyCode::ArrowDown) {
             player.velocity.y -=
-                (player.rotation).to_radians().sin() * PLAYER_SPEED * time.delta_seconds();
+                -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
             player.velocity.x -=
-                (player.rotation).to_radians().cos() * PLAYER_SPEED * time.delta_seconds();
+                (player.rotation).cos() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyA) || keyboard_input.pressed(KeyCode::ArrowLeft) {
             player.rotation += PLAYER_ROTATING_SPEED;
@@ -53,13 +54,13 @@ pub fn player_movement(
             player.rotation -= PLAYER_ROTATING_SPEED;
         }
 
-        player.rotation = adjust_rotation(player.rotation);
+        // player.rotation = adjust_rotation(player.rotation);
 
-        if player.velocity.length() > 0.0 {
-            player.velocity = player.velocity.normalize();
-        }
+        // if player.velocity.length() > 0.0 {
+        //     player.velocity = player.velocity.normalize();
+        // }
 
-        if !map_collision_points(player.velocity.x, player.velocity.y) {
+        if map_collision_points(player.velocity.x, player.velocity.y) {
             (player.velocity.x, player.velocity.y) = previous_velocity;
         }
 
@@ -86,8 +87,11 @@ pub fn adjust_rotation(rotation: f32) -> f32 {
 pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player, With<Player>>) {
     if let Ok(player) = player_query.get_single() {
         for (ray, wall_height) in player.get_view().iter().enumerate() {
+            // let y_top = ((80 / 2) - (wall_height / 2)) as f32;
             let y_top = (80 - (wall_height / 2)) as f32;
             gizmos.ray_2d(
+                // Vec2::new(ray as f32, y_top),
+                // Vec2::new(ray as f32, y_top + *wall_height as f32),
                 Vec2::new(ray as f32, y_top),
                 Vec2::new(ray as f32, y_top + *wall_height as f32),
                 Color::LIME_GREEN,
