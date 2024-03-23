@@ -36,16 +36,12 @@ pub fn player_movement(
         let previous_velocity = (player.velocity.x, player.velocity.y);
 
         if keyboard_input.pressed(KeyCode::KeyW) || keyboard_input.pressed(KeyCode::ArrowUp) {
-            player.velocity.x +=
-                (player.rotation).cos() * PLAYER_SPEED * time.delta_seconds();
-            player.velocity.y +=
-                -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
+            player.velocity.x += (player.rotation).cos() * PLAYER_SPEED * time.delta_seconds();
+            player.velocity.y += -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyS) || keyboard_input.pressed(KeyCode::ArrowDown) {
-            player.velocity.y -=
-                -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
-            player.velocity.x -=
-                (player.rotation).cos() * PLAYER_SPEED * time.delta_seconds();
+            player.velocity.y -= -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
+            player.velocity.x -= (player.rotation).cos() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyA) || keyboard_input.pressed(KeyCode::ArrowLeft) {
             player.rotation += PLAYER_ROTATING_SPEED;
@@ -71,18 +67,18 @@ pub fn player_movement(
     }
 }
 
-pub fn adjust_rotation(rotation: f32) -> f32 {
-    let new_rotation;
-    if rotation >= 360.0 {
-        new_rotation = (360.0 - rotation).abs();
-    } else if rotation < 0.0 {
-        new_rotation = 360.0 - rotation.abs();
-    } else {
-        new_rotation = rotation;
-    }
+// pub fn adjust_rotation(rotation: f32) -> f32 {
+//     let new_rotation;
+//     if rotation >= 360.0 {
+//         new_rotation = (360.0 - rotation).abs();
+//     } else if rotation < 0.0 {
+//         new_rotation = 360.0 - rotation.abs();
+//     } else {
+//         new_rotation = rotation;
+//     }
 
-    new_rotation
-}
+//     new_rotation
+// }
 
 pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player, With<Player>>) {
     if let Ok(player) = player_query.get_single() {

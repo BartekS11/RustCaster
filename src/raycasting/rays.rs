@@ -14,7 +14,7 @@ fn raycast_horizontal_intersection(
 ) -> f32 {
     // Calculate up angle
     let up_angle = ((player_rotation / PI).floor() % 2.0).abs() != 0.0;
-    
+
     let intersect_first_y = if up_angle {
         (player_velocity_y).ceil() - player_velocity_y
     } else {
