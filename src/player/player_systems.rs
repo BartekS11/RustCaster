@@ -49,13 +49,6 @@ pub fn player_movement(
         if keyboard_input.pressed(KeyCode::KeyD) || keyboard_input.pressed(KeyCode::ArrowRight) {
             player.rotation -= PLAYER_ROTATING_SPEED;
         }
-
-        // player.rotation = adjust_rotation(player.rotation);
-
-        // if player.velocity.length() > 0.0 {
-        //     player.velocity = player.velocity.normalize();
-        // }
-
         if map_collision_points(player.velocity.x, player.velocity.y) {
             (player.velocity.x, player.velocity.y) = previous_velocity;
         }
@@ -66,19 +59,6 @@ pub fn player_movement(
         );
     }
 }
-
-// pub fn adjust_rotation(rotation: f32) -> f32 {
-//     let new_rotation;
-//     if rotation >= 360.0 {
-//         new_rotation = (360.0 - rotation).abs();
-//     } else if rotation < 0.0 {
-//         new_rotation = 360.0 - rotation.abs();
-//     } else {
-//         new_rotation = rotation;
-//     }
-
-//     new_rotation
-// }
 
 pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player, With<Player>>) {
     if let Ok(player) = player_query.get_single() {
