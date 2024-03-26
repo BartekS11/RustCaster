@@ -9,8 +9,7 @@ pub struct DebugUI;
 
 impl Plugin for DebugUI {
     fn build(&self, app: &mut App) {
-        app
-            .add_plugins(WorldInspectorPlugin::default())
+        app.add_plugins(WorldInspectorPlugin::default())
             .add_plugins(FrameTimeDiagnosticsPlugin)
             .add_plugins(EntityCountDiagnosticsPlugin)
             .add_systems(Update, close_on_esc)
