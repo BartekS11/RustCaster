@@ -63,15 +63,16 @@ pub fn player_movement(
 pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player, With<Player>>) {
     if let Ok(player) = player_query.get_single() {
         for (ray, wall_height) in player.get_view().iter().enumerate() {
-            // let y_top = ((80 / 2) - (wall_height / 2)) as f32;
-            let y_top = (80 - (wall_height / 2)) as f32;
+            // let y_top = ((80 / 2) - (wall_height)) as f32;
+            let y_top = (200 - (wall_height / 2)) as f32;
             gizmos.ray_2d(
                 // Vec2::new(ray as f32, y_top),
                 // Vec2::new(ray as f32, y_top + *wall_height as f32),
-                Vec2::new(ray as f32, y_top),
-                Vec2::new(ray as f32, y_top + *wall_height as f32),
+                Vec2::new(ray as f32, 0.0),
+                // Vec2::new(ray as f32, y_top + *wall_height as f32),
+                Vec2::new(0.0, y_top + *wall_height as f32),
                 Color::LIME_GREEN,
-            )
+            );
         }
     }
 }

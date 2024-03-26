@@ -49,16 +49,3 @@ fn display_debug_stats(mut egui: EguiContexts, diagnostics: Res<DiagnosticsStore
         ));
     });
 }
-
-// fn display_debug_player_stats(mut egui: EguiContexts, world: &mut World) {
-//     egui::Window::new("Player stuff").show(egui.ctx_mut(), |ui| {
-//         ui.label(format!(
-//             "Player pos: {:.02}",
-//             world
-//                 .get(&world.entity(player))
-//                 .unwrap()
-//                 .smoothed()
-//                 .unwrap_or_default()
-//         ));
-//     });
-// }
