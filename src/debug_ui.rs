@@ -13,19 +13,7 @@ impl Plugin for DebugUI {
             .add_plugins(FrameTimeDiagnosticsPlugin)
             .add_plugins(EntityCountDiagnosticsPlugin)
             .add_systems(Update, close_on_esc)
-            .add_systems(Update, (inspector_ui, display_debug_stats));
-    }
-}
-
-fn inspector_ui(world: &mut World, mut disabled: Local<bool>) {
-    let space_pressed = world
-        .resource::<ButtonInput<KeyCode>>()
-        .just_pressed(KeyCode::KeyC);
-    match space_pressed {
-        true => {
-            *disabled = !*disabled;
-        }
-        false => {}
+            .add_systems(Update, display_debug_stats);
     }
 }
 

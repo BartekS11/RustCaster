@@ -4,11 +4,12 @@ use super::{
     player_component::Player,
     player_constants::{
         PLAYER_ROTATING_SPEED, PLAYER_SPEED, PLAYER_STARTING_POSITION, PLAYER_STARTING_ROTATION,
+        WALL_COLOR, WALL_COLOR_SHADOW,
     },
 };
 use bevy::prelude::*;
 
-pub fn player_spawn(mut commands: Commands, _assets_serv: Res<AssetServer>) {
+pub fn player_spawn(mut commands: Commands) {
     commands.spawn((
         SpriteBundle {
             transform: Transform::from_xyz(
@@ -22,7 +23,7 @@ pub fn player_spawn(mut commands: Commands, _assets_serv: Res<AssetServer>) {
             rotation: PLAYER_STARTING_ROTATION,
             health_points: 101,
             velocity: PLAYER_STARTING_POSITION,
-            is_collision_on: true,
+            is_collision_on: false,
         },
     ));
 }
@@ -40,8 +41,8 @@ pub fn player_movement(
             player.velocity.y += -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyS) || keyboard_input.pressed(KeyCode::ArrowDown) {
-            player.velocity.y -= -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
             player.velocity.x -= (player.rotation).cos() * PLAYER_SPEED * time.delta_seconds();
+            player.velocity.y -= -(player.rotation).sin() * PLAYER_SPEED * time.delta_seconds();
         }
         if keyboard_input.pressed(KeyCode::KeyA) || keyboard_input.pressed(KeyCode::ArrowLeft) {
             player.rotation += PLAYER_ROTATING_SPEED;
@@ -63,14 +64,35 @@ pub fn player_movement(
 pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player, With<Player>>) {
     if let Ok(player) = player_query.get_single() {
         for (ray, wall_height) in player.get_view().iter().enumerate() {
-            let y_top = (80 - (wall_height / 2)) as f32;
+            let (height, shadow) = wall_height;
+            let mut colorWall: Color = WALL_COLOR;
+
+            if !*shadow {
+                colorWall = WALL_COLOR_SHADOW;
+            }
+            let y_top = (80 - (height / 2)) as f32;
             gizmos.ray_2d(
                 Vec2::new(ray as f32, y_top),
-                Vec2::new(0.0, *wall_height as f32),
-                // Vec2::new(ray as f32, 0.0),
-                // Vec2::new(0.0, y_top + *wall_height as f32),
-                Color::LIME_GREEN,
+                Vec2::new(0.0, *height as f32),
+                colorWall,
             );
         }
     }
 }
+
+//SYSTEM FOR SPRINT
+// fn sprint_for_player(
+//     keyboard_input: Res<ButtonInput<KeyCode>>,
+//     mut player_query: Query<&mut Player, With<Player>>) {
+//         if let Ok(mut player) = player_query.get_single_mut() {
+//             if keyboard_input.pressed(KeyCode::ShiftLeft) {
+//                 PLAYER_SPEED += 0.30
+//             }
+//         }
+// }
+
+// fn sprint_for_player(player_velocity: &mut Vec2) -> &Vec2 {
+//     player_velocity.x *= PLAYER_SPEED * 0.05;
+//     player_velocity.y *= PLAYER_SPEED * 0.05;
+//     player_velocity
+// }

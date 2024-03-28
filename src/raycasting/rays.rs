@@ -31,7 +31,7 @@ fn raycast_horizontal_intersection(
     let mut next_ray_from_player_y = intersect_first_y;
 
     // Loop that extends ray until it hits wall
-    for _ in 0..128 {
+    for _ in 0..1000 {
         let current_x = next_ray_from_player_x + player_velocity_x;
         let current_y = if up_angle {
             next_ray_from_player_y + player_velocity_y
@@ -71,7 +71,7 @@ fn raycast_vertical_intersection(
     let mut next_ray_from_player_y = intersect_first_y;
 
     // Loop that extends ray until it hits wall
-    for _ in 0..128 {
+    for _ in 0..1000 {
         let current_x = if right {
             next_ray_from_player_x + player_velocity_x
         } else {
@@ -93,10 +93,10 @@ pub fn get_player_view(
     player_velocity_x: f32,
     player_velocity_y: f32,
     player_rotation: f32,
-) -> [i32; 800] {
+) -> [(i32, bool); 800] {
     let start_angle = player_rotation + HALF_FOV;
 
-    let mut walls = [0; 800];
+    let mut walls = [(0, false); 800];
 
     for (idx, wall) in walls.iter_mut().enumerate() {
         let angle = start_angle - idx as f32 * RAY_ANGLE_INCREMENT;
@@ -104,7 +104,15 @@ pub fn get_player_view(
         let h_dist = raycast_horizontal_intersection(player_velocity_x, player_velocity_y, angle);
         let v_dist = raycast_vertical_intersection(player_velocity_x, player_velocity_y, angle);
 
-        *wall = (WALL_HEIGHT / f32::min(h_dist, v_dist) * (angle - player_rotation).cos()) as i32;
+        let (min_dist, shadow_color) = if h_dist < v_dist {
+            (h_dist, false)
+        } else {
+            (v_dist, true)
+        };
+        *wall = (
+            (WALL_HEIGHT / min_dist * (angle - player_rotation).cos()) as i32,
+            shadow_color,
+        );
     }
     walls
 }
