@@ -23,7 +23,7 @@ pub fn player_spawn(mut commands: Commands) {
             rotation: PLAYER_STARTING_ROTATION,
             health_points: 101,
             velocity: PLAYER_STARTING_POSITION,
-            is_collision_on: false,
+            is_collision_on: true,
         },
     ));
 }
@@ -50,7 +50,7 @@ pub fn player_movement(
         if keyboard_input.pressed(KeyCode::KeyD) || keyboard_input.pressed(KeyCode::ArrowRight) {
             player.rotation -= PLAYER_ROTATING_SPEED;
         }
-        if map_collision_points(player.velocity.x, player.velocity.y) {
+        if player.is_collision_on && map_collision_points(player.velocity.x, player.velocity.y) {
             (player.velocity.x, player.velocity.y) = previous_velocity;
         }
 
@@ -70,7 +70,7 @@ pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player,
             if !*shadow {
                 colorWall = WALL_COLOR_SHADOW;
             }
-            let y_top = (80 - (height / 2)) as f32;
+            let y_top = (200 - (height / 2)) as f32;
             gizmos.ray_2d(
                 Vec2::new(ray as f32, y_top),
                 Vec2::new(0.0, *height as f32),

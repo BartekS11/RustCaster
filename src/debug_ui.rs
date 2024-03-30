@@ -5,6 +5,8 @@ use bevy::{
 };
 use bevy_inspector_egui::{bevy_egui::EguiContexts, egui, quick::WorldInspectorPlugin};
 
+use crate::common_utils::CrosshairPlugin;
+
 pub struct DebugUI;
 
 impl Plugin for DebugUI {
@@ -12,6 +14,7 @@ impl Plugin for DebugUI {
         app.add_plugins(WorldInspectorPlugin::default())
             .add_plugins(FrameTimeDiagnosticsPlugin)
             .add_plugins(EntityCountDiagnosticsPlugin)
+            .add_plugins(CrosshairPlugin)
             .add_systems(Update, close_on_esc)
             .add_systems(Update, display_debug_stats);
     }
