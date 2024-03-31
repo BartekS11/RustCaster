@@ -15,7 +15,7 @@ impl Plugin for WorldPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
-                resolution: (800.0, 600.0).into(),
+                resolution: (800.0 * 1.5, 600.0).into(),
                 title: "RustCaster".to_string(),
                 ..default()
             }),
