@@ -8,6 +8,7 @@ pub struct Player {
     pub health_points: u32,
     pub velocity: Vec2,
     pub is_collision_on: bool,
+    pub ammo: i8,
 }
 
 impl Player {

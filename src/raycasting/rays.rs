@@ -29,7 +29,7 @@ fn raycast_horizontal_intersection(
     let mut next_ray_from_player_y = intersect_first_y;
 
     // Loop that extends ray until it hits wall,
-    // its limited to 1000 to not crete infinite loop
+    // its limited to 1000 to not create infinite loop
     for _ in 0..1000 {
         let current_x = next_ray_from_player_x + player_velocity_x;
         let current_y = if up_angle {
@@ -68,7 +68,7 @@ fn raycast_vertical_intersection(
     let mut next_ray_from_player_y = intersect_first_y;
 
     // Loop that extends ray until it hits wall,
-    // its limited to 1000 to not crete infinite loop
+    // its limited to 1000 to not create infinite loop
     for _ in 0..1000 {
         let current_x = if right {
             next_ray_from_player_x + player_velocity_x

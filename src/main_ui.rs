@@ -2,9 +2,11 @@ use bevy::{prelude::*, window::*};
 
 use crate::common_utils::CrosshairPlugin;
 
-pub struct MainUI;
+pub struct MainUI<S: States> {
+    pub state: S,
+}
 
-impl Plugin for MainUI {
+impl<S: States> Plugin for MainUI<S> {
     fn build(&self, app: &mut App) {
         app.add_plugins(CrosshairPlugin)
             .add_systems(Update, close_on_esc);

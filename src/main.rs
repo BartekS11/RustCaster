@@ -10,16 +10,18 @@ mod player;
 mod raycasting;
 mod world;
 
+use common_utils::{game::GameState, GameStatePlugin};
 use debug_ui::DebugUI;
-// use main_ui::MainUI;
 use player::PlayerPlugin;
 use world::WorldPlugin;
 
 fn main() {
     App::new()
+        .add_plugins(GameStatePlugin)
         .add_plugins(WorldPlugin)
-        .add_plugins(DebugUI)
-        // .add_plugins(MainUI)
+        .add_plugins(DebugUI {
+            state: GameState::Debug,
+        })
         .add_plugins(PlayerPlugin)
         .run();
 }

@@ -24,6 +24,7 @@ pub fn player_spawn(mut commands: Commands) {
             health_points: 101,
             velocity: PLAYER_STARTING_POSITION,
             is_collision_on: true,
+            ammo: 8,
         },
     ));
 }
@@ -79,6 +80,10 @@ pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player,
         }
     }
 }
+
+// fn shoot(mut gizmos: Gizmos) {
+//     // gizmos.line_2d(start, end, color)
+// }
 
 //SYSTEM FOR SPRINT
 // fn sprint_for_player(
