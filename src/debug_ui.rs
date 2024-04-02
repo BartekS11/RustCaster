@@ -19,7 +19,7 @@ impl<S: States> Plugin for DebugUI<S> {
             .add_plugins(CrosshairPlugin)
             .add_systems(
                 Update,
-                display_debug_stats.run_if(in_state(self.state.clone()))
+                display_debug_stats.run_if(in_state(self.state.clone())),
             )
             .add_systems(Update, close_on_esc);
     }
