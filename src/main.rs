@@ -4,7 +4,6 @@ use bevy::prelude::*;
 mod camera;
 mod common_utils;
 mod debug_ui;
-mod main_ui;
 mod map;
 mod player;
 mod raycasting;
