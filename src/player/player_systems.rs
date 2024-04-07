@@ -100,7 +100,6 @@ pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player,
 //     }
 // }
 
-
 // fn shoot(mut gizmos: Gizmos) {
 //     // gizmos.line_2d(start, end, color)
 // }
