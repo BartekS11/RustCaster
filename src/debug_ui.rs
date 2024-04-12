@@ -28,7 +28,7 @@ impl<S: States> Plugin for DebugUI<S> {
 fn display_debug_stats(mut egui: EguiContexts, diagnostics: Res<DiagnosticsStore>) {
     egui::Window::new("Performance stuff").show(egui.ctx_mut(), |ui| {
         ui.label(format!(
-            "Avg. FPS: {:.03}",
+            "Avg. FPS: {:.02}",
             diagnostics
                 .get(&FrameTimeDiagnosticsPlugin::FPS)
                 .unwrap()
