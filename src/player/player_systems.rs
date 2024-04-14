@@ -1,10 +1,9 @@
-use crate::map::map_systems::map_collision_points;
+use crate::map::{map_component::CustomAssetHandler, map_systems::{color_distance, map_collision_points, Ground}};
 
 use super::{
     player_component::Player,
     player_constants::{
-        PLAYER_ROTATING_SPEED, PLAYER_SPEED, PLAYER_STARTING_POSITION, PLAYER_STARTING_ROTATION,
-        WALL_COLOR, WALL_COLOR_SHADOW,
+        PLAYER_ROTATING_SPEED, PLAYER_SPEED, PLAYER_STARTING_POSITION, PLAYER_STARTING_ROTATION, WALL, WALL_COLOR, WALL_COLOR_SHADOW
     },
 };
 use bevy::prelude::*;
@@ -80,43 +79,3 @@ pub fn start_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player,
         }
     }
 }
-
-// pub fn start_textured_raycast_for_player(mut gizmos: Gizmos, player_query: Query<&Player, With<Player>>) {
-//     if let Ok(player) = player_query.get_single() {
-//         for (ray, wall_height) in player.get_view().iter().enumerate() {
-//             let (height, shadow) = wall_height;
-//             let mut colorWall: Color = WALL_COLOR;
-
-//             if !*shadow {
-//                 colorWall = WALL_COLOR_SHADOW;
-//             }
-//             let y_top = (200 - (height / 2)) as f32;
-//             gizmos.ray_2d(
-//                 Vec2::new(ray as f32, y_top),
-//                 Vec2::new(0.0, *height as f32),
-//                 colorWall,
-//             );
-//         }
-//     }
-// }
-
-// fn shoot(mut gizmos: Gizmos) {
-//     // gizmos.line_2d(start, end, color)
-// }
-
-//SYSTEM FOR SPRINT
-// fn sprint_for_player(
-//     keyboard_input: Res<ButtonInput<KeyCode>>,
-//     mut player_query: Query<&mut Player, With<Player>>) {
-//         if let Ok(mut player) = player_query.get_single_mut() {
-//             if keyboard_input.pressed(KeyCode::ShiftLeft) {
-//                 PLAYER_SPEED += 0.30
-//             }
-//         }
-// }
-
-// fn sprint_for_player(player_velocity: &mut Vec2) -> &Vec2 {
-//     player_velocity.x *= PLAYER_SPEED * 0.05;
-//     player_velocity.y *= PLAYER_SPEED * 0.05;
-//     player_velocity
-// }

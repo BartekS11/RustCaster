@@ -11,6 +11,7 @@ mod world;
 
 use common_utils::{game::GameState, GameStatePlugin};
 use debug_ui::DebugUI;
+use map::MapPlugin;
 use player::PlayerPlugin;
 use world::WorldPlugin;
 
@@ -21,6 +22,7 @@ fn main() {
         .add_plugins(DebugUI {
             state: GameState::Debug,
         })
+        .add_plugins(MapPlugin)
         .add_plugins(PlayerPlugin)
         .run();
 }
