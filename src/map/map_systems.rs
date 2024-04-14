@@ -1,5 +1,3 @@
-//use bevy::prelude::*;
-
 const MAP: [[u8; 16]; 16] = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -28,8 +26,3 @@ pub fn map_collision_points(x: f32, y: f32) -> bool {
         None => true,
     }
 }
-
-// fn draw_wall_texture(mut commands: Commands, server: Res<AssetServer>) {
-//     let wall_texture: Handle<Image> = server.load("wall-stone.png");
-
-// }
